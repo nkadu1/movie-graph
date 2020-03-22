@@ -1,0 +1,14 @@
+query GetListByID($id:ID!,$app_Key:String){
+    getListById(api_Key: $app_Key, id: $id){
+        media_type
+        id
+    }
+}
+
+query GetUsersCollection($accountId:String){
+    getAllListByUser(accountId : $accountId){
+        listName
+        id
+    }
+}
+
