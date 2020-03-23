@@ -16,7 +16,7 @@ public class ApolloClientConnector {
     private static final String BASE_URL = "http://10.0.2.2:4000/";
     private static ApolloClient apolloClient;
 
-    private static ApolloClient buildApolloClientInstance(Context applicationContext){
+    private static ApolloClient buildApolloClientInstance(){
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .build();
 
@@ -51,9 +51,9 @@ public class ApolloClientConnector {
         return apolloClient;
     }
 
-    public static ApolloClient getApolloClient(Context applicationContext) {
+    public static ApolloClient getApolloClient() {
         if ( apolloClient== null) {
-            apolloClient = buildApolloClientInstance(applicationContext);
+            apolloClient = buildApolloClientInstance();
         }
         return apolloClient;
     }

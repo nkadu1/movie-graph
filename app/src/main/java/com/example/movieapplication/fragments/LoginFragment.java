@@ -3,6 +3,7 @@ package com.example.movieapplication.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.example.movieapplication.MovieActivity;
 import com.example.movieapplication.databinding.LoginFragmentBinding;
 import com.example.movieapplication.dagger.DaggerViewModelFactory;
 import com.example.movieapplication.viewmodels.LoginViewModel;
+import com.example.movieapplication.viewmodels.MovieActivityViewModel;
+
 import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
@@ -32,7 +37,7 @@ public class LoginFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString("TAG", TAG);
         loginFragment.setArguments(args);
-        return new LoginFragment();
+        return loginFragment;
     }
 
     @Nullable
@@ -49,36 +54,50 @@ public class LoginFragment extends Fragment {
     }
 
     private View.OnClickListener onSubmit(){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String username =  loginFragmentBinding.usernameInput.getText().toString();
-                String password =  loginFragmentBinding.passwordInput.getText().toString();
-                if(validInput(username,password)){
-                    loginViewModel.validateLogin(username, password);
-                }
+        return v -> {
+            String username =  loginFragmentBinding.usernameInput.getText().toString();
+            String password =  loginFragmentBinding.passwordInput.getText().toString();
+            if(validInput(username,password)){
+                loginViewModel.validateLogin(username, password);
             }
         };
     }
 
+    private void setUpViewModels(){
+        this.loginViewModel = ViewModelProviders.of(this, daggerViewModelFactory).get(LoginViewModel.class);
+        MovieActivityViewModel movieActivityViewModel = ViewModelProviders.of(getActivity()).get(MovieActivityViewModel.class);
+        loginViewModel.getValidateLoginLiveData().observe(getViewLifecycleOwner(), status -> {
+            if(status){
+                movieActivityViewModel.setFragment(UsersListFragment.newInstance());
+            }
+            else{
+                Toast toast = Toast.makeText(getContext(), "Please check your credentials",Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.TOP,0,200);
+                toast.show();
+            }
+        });
+    }
+
     private boolean validInput(String username, String password){
         if(TextUtils.isEmpty(username) && TextUtils.isEmpty(password)){
-            Toast.makeText(getContext(), "Email and Password is required",Toast.LENGTH_SHORT).show();
+            Toast toast = Toast.makeText(getContext(), "Email and Password is required",Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP,0,200);
+            toast.show();
             return false;
         }
-        if(TextUtils.isEmpty(username)){
-            Toast.makeText(getContext(), "Email is required",Toast.LENGTH_SHORT).show();
+        else if(TextUtils.isEmpty(username)){
+            Toast toast = Toast.makeText(getContext(), "Email is required",Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP,0,200);
+            toast.show();
             return false;
         }
         else if(TextUtils.isEmpty(password)){
-            Toast.makeText(getContext(), "Password is required",Toast.LENGTH_SHORT).show();
+            Toast toast = Toast.makeText(getContext(), "Password is required",Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP,0,200);
+            toast.show();
             return false;
         }
         return true;
-    }
-
-    private void setUpViewModels(){
-        this.loginViewModel = ViewModelProviders.of(this, daggerViewModelFactory).get(LoginViewModel.class);
     }
 
     @Override

@@ -20,7 +20,7 @@ public class UsersListFragmentViewModel extends ViewModel {
        usersListRepository.fetchUsersCollection();
     }
 
-    public LiveData<List<GetUsersCollectionQuery.GetAllListByUser>> getUsersListCollectionLiveData() {
+    public LiveData<List<GetUsersCollectionQuery.GetUsersListCollection>> getUsersListCollectionLiveData() {
         return usersListRepository.getUsersListCollectionLiveData();
     }
 

@@ -1,14 +1,41 @@
 query GetListByID($id:ID!,$app_Key:String){
-    getListById(api_Key: $app_Key, id: $id){
+    getListById(api_key: $app_Key, id: $id){
         media_type
         id
     }
 }
 
 query GetUsersCollection($accountId:String){
-    getAllListByUser(accountId : $accountId){
+    getUsersListCollection(accountId : $accountId){
         listName
         id
     }
 }
 
+query GetRequestToken($api_key:String){
+    getRequestToken(api_key: $api_key){
+        status_code,
+        request_token
+    }
+}
+
+
+mutation ValidateLogin($api_key:String, $user:User){
+    validateLogin(api_key: $api_key, user: $user){
+        status_code
+    }
+}
+
+
+ mutation GetSessionId($api_key:String, $request_token : RequestTokenBody){
+     getSessionId(api_key :$api_key , request_token: $request_token){
+         status_code,
+         session_id
+     }
+ }
+
+mutation Logout($api_key:String,$session_id :SessionBody){
+    logout(api_key : $api_key, session_id:$session_id){
+        status_code
+    }
+}

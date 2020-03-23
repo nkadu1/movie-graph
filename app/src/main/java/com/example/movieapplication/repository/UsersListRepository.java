@@ -23,13 +23,13 @@ import timber.log.Timber;
 public class UsersListRepository {
 
 
-    private MutableLiveData<List<GetUsersCollectionQuery.GetAllListByUser>> usersListCollectionLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<GetUsersCollectionQuery.GetUsersListCollection>> usersListCollectionLiveData = new MutableLiveData<>();
     private ApolloClient apolloClient;
     private CompositeDisposable disposable = new CompositeDisposable();
 
     @Inject
-    public UsersListRepository(Context applicationContext) {
-        apolloClient = ApolloClientConnector.getApolloClient(applicationContext);
+    public UsersListRepository() {
+        apolloClient = ApolloClientConnector.getApolloClient();
     }
 
     public void fetchUsersCollection() {
@@ -56,24 +56,24 @@ public class UsersListRepository {
     }
 
 
-    private List<GetUsersCollectionQuery.GetAllListByUser> usersCollectionRepository(Response<GetUsersCollectionQuery.Data> response) {
-        List<GetUsersCollectionQuery.GetAllListByUser> usersCollection = new ArrayList<>();
+    private List<GetUsersCollectionQuery.GetUsersListCollection> usersCollectionRepository(Response<GetUsersCollectionQuery.Data> response) {
+        List<GetUsersCollectionQuery.GetUsersListCollection> usersCollection = new ArrayList<>();
         final GetUsersCollectionQuery.Data responseData = response.data();
         if (responseData == null) {
             return Collections.emptyList();
         }
-        final List<GetUsersCollectionQuery.GetAllListByUser> medialists = responseData.getAllListByUser();
+        final List<GetUsersCollectionQuery.GetUsersListCollection> medialists = responseData.getUsersListCollection();
         if (medialists == null) {
             return Collections.emptyList();
         }
-        for (GetUsersCollectionQuery.GetAllListByUser entry : medialists) {
+        for (GetUsersCollectionQuery.GetUsersListCollection entry : medialists) {
             usersCollection.add(entry);
         }
         return usersCollection;
     }
 
 
-    public LiveData<List<GetUsersCollectionQuery.GetAllListByUser>> getUsersListCollectionLiveData() {
+    public LiveData<List<GetUsersCollectionQuery.GetUsersListCollection>> getUsersListCollectionLiveData() {
         return usersListCollectionLiveData;
     }
 

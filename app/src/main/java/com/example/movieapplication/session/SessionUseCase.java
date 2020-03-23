@@ -1,6 +1,6 @@
 package com.example.movieapplication.session;
 
-import com.example.movieapplication.model.User;
+import com.example.type.User;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -21,10 +21,8 @@ public class SessionUseCase {
     }
 
     public void saveLoggedInUser(User user){
-        if(!user.equals(session.getUser())){
             session.setUser(user);
             sessionDataSource.putSession(session);
-        }
     }
 
     public void saveRequestToken(String requestToken){
@@ -33,8 +31,17 @@ public class SessionUseCase {
     }
 
     public Session getSession() {
+        if(sessionDataSource.getSession() == null){
+            return session;
+        }
         return sessionDataSource.getSession();
     }
 
+    public void saveSessionId(String sessionId){
+        if(!sessionId.equals(getSession().getSessionId())){
+            session.setSessionId(sessionId);
+            sessionDataSource.putSession(session);
+        }
+    }
 
 }

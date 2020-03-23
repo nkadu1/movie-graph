@@ -14,7 +14,7 @@ import java.util.List;
 
 public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.ListItemViewHolder> {
 
-    private List<GetUsersCollectionQuery.GetAllListByUser> userList = new ArrayList<>();
+    private List<GetUsersCollectionQuery.GetUsersListCollection> userList = new ArrayList<>();
 
     @Inject
     public UsersListAdapter() {
@@ -29,7 +29,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.List
         return new ListItemViewHolder(listCardBinding.getRoot(), listCardBinding);
     }
 
-    public void setUserList(List<GetUsersCollectionQuery.GetAllListByUser> userList) {
+    public void setUserList(List<GetUsersCollectionQuery.GetUsersListCollection> userList) {
         this.userList = userList;
         notifyDataSetChanged();
     }
@@ -64,7 +64,7 @@ public class UsersListAdapter extends RecyclerView.Adapter<UsersListAdapter.List
             this.listCardBinding = listCardBinding;
         }
 
-        void bind(GetUsersCollectionQuery.GetAllListByUser list) {
+        void bind(GetUsersCollectionQuery.GetUsersListCollection list) {
             this.listCardBinding.listName.setText(list.listName());
         }
 

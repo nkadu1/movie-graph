@@ -17,7 +17,6 @@ public class FragmentTransitionManager {
         if (fragmentTransitionManager == null) {
             fragmentTransitionManager = new FragmentTransitionManager(fragmentManager);
         }
-
         return fragmentTransitionManager;
     }
 
@@ -27,8 +26,6 @@ public class FragmentTransitionManager {
         Fragment currentFragment = fragmentManager.findFragmentById(layout);
 
         if(currentFragment != null) {
-            //detach current fragment before adding new fragment
-            //detaching instead of replacing so that we maintain the state of the fragment
             fragmentManager
                     .beginTransaction()
                     .detach(currentFragment)
@@ -44,50 +41,4 @@ public class FragmentTransitionManager {
         }
     }
 
-    public void attachFragment(Fragment fragment, int layout) {
-        Fragment currentFragment = fragmentManager.findFragmentById(layout);
-        if(currentFragment != null) {
-            //detach current fragment before attaching new fragment
-            //detaching instead of replacing so that we maintain the state of the fragment
-            fragmentManager
-                    .beginTransaction()
-                    .detach(currentFragment)
-                    .attach(fragment)
-                    .commitNow();
-        }
-        else{
-            fragmentManager
-                    .beginTransaction()
-                    .attach(fragment)
-                    .commitNow();
-        }
-    }
-
-
-    public boolean isFragmentAvailableInBackStack(String tag) {
-        return getFragment(tag) != null;
-    }
-
-    public Fragment getFragment(String tag){
-        return fragmentManager.findFragmentByTag(tag);
-    }
-
-
-    public static void resetFragmentTransitionManager() {
-        fragmentTransitionManager = null;
-    }
-
-    public void removeAllFragments() {
-        for (Fragment fragment: fragmentManager.getFragments()) {
-            fragmentManager
-                    .beginTransaction()
-                    .remove(fragment)
-                    .commitNowAllowingStateLoss();
-        }
-
-        while (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStackImmediate();
-        }
-        fragmentManager.executePendingTransactions();
-    }
 }
