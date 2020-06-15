@@ -44,4 +44,9 @@ public class SessionUseCase {
         }
     }
 
+    public void clearSession(){
+        session = new Session();
+        sessionDataSource.putSession(session);
+    }
+
 }

@@ -17,17 +17,14 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class MovieModule {
 
     /*
-        Generates the sub-component needed for performing field injection on the HomeScreenActivity
+        Generates the sub-component needed for performing field injection on the MovieActivity
      */
-    @ContributesAndroidInjector(modules = {
-            AppViewModelModule.class,
-            AppModule.class
-    })
+    @ContributesAndroidInjector()
     abstract MovieActivity contributeActivityInjector();
 
     @Provides
-    static Context provideContext(MovieApplication planItApplication){
-        return planItApplication.getApplicationContext();
+    static Context provideContext(MovieApplication movieApplication){
+        return movieApplication.getApplicationContext();
     }
 
 }

@@ -10,10 +10,10 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class AppModule {
 
-    @ContributesAndroidInjector(modules = {AppViewModelModule.class})
+    @ContributesAndroidInjector()
     abstract UsersListFragment contributeUsersListFragment();
 
-    @ContributesAndroidInjector(modules = {AppViewModelModule.class})
+    @ContributesAndroidInjector()
     abstract LoginFragment contributeLoginFragment();
 
 

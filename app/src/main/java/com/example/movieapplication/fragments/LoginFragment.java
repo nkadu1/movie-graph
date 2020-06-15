@@ -105,4 +105,11 @@ public class LoginFragment extends Fragment {
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        loginViewModel.onCleared();
+    }
+
 }

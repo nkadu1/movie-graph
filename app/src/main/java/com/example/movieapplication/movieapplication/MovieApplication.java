@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.Fragment;
 
+import com.example.movieapplication.session.SessionUseCase;
+
 import javax.inject.Inject;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;

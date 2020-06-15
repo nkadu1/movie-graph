@@ -19,6 +19,7 @@ import com.example.movieapplication.R;
 import com.example.movieapplication.adapters.UsersListAdapter;
 import com.example.movieapplication.databinding.UserListFragmentBinding;
 import com.example.movieapplication.dagger.DaggerViewModelFactory;
+import com.example.movieapplication.session.SessionUseCase;
 import com.example.movieapplication.viewmodels.MovieActivityViewModel;
 import com.example.movieapplication.viewmodels.UsersListFragmentViewModel;
 
@@ -34,6 +35,8 @@ public class UsersListFragment extends Fragment {
     private UsersListFragmentViewModel usersListFragmentViewModel;
     @Inject
     DaggerViewModelFactory daggerViewModelFactory;
+    @Inject
+    SessionUseCase sessionUseCase;
 
     public static Fragment newInstance() {
         UsersListFragment usersListFragment = new UsersListFragment();
@@ -55,20 +58,16 @@ public class UsersListFragment extends Fragment {
 
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_users_list, menu);
 
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.logout_option) {
+            sessionUseCase.clearSession();
             MovieActivityViewModel movieActivityViewModel = ViewModelProviders.of(getActivity()).get(MovieActivityViewModel.class);
             movieActivityViewModel.setFragment(LoginFragment.newInstance());
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -92,6 +91,21 @@ public class UsersListFragment extends Fragment {
         super.onAttach(context);
         setHasOptionsMenu(true);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_users_list, menu);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        usersListFragmentViewModel.onCleared();
+    }
+
 
 
 }

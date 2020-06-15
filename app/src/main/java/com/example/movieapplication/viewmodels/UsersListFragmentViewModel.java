@@ -25,7 +25,7 @@ public class UsersListFragmentViewModel extends ViewModel {
     }
 
     @Override
-    protected void onCleared() {
+    public void onCleared() {
         usersListRepository.dispose();
     }
 }

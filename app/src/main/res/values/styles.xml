@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="buttonStyle" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:colorBackground">@android:color/holo_red_dark</item>
+    </style>
+
 </resources>

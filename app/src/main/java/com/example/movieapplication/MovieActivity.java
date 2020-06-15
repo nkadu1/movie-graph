@@ -1,26 +1,26 @@
 package com.example.movieapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.movieapplication.dagger.DaggerViewModelFactory;
 import com.example.movieapplication.databinding.MainActivityBinding;
 import com.example.movieapplication.fragments.LoginFragment;
 import com.example.movieapplication.fragments.UsersListFragment;
 import com.example.movieapplication.navigation.FragmentTransitionManager;
+import com.example.movieapplication.repository.SingleLiveEvent;
 import com.example.movieapplication.viewmodels.LoginViewModel;
 import com.example.movieapplication.viewmodels.MovieActivityViewModel;
-
-import java.util.Timer;
-
 import javax.inject.Inject;
-
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -28,7 +28,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 import timber.log.Timber;
 
 
-public class MovieActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+public class MovieActivity extends AppCompatActivity implements HasSupportFragmentInjector, LifecycleOwner {
 
     MainActivityBinding mainActivityBinding;
 
@@ -71,7 +71,11 @@ public class MovieActivity extends AppCompatActivity implements HasSupportFragme
     }
 
     private void setUpLandingFragment(){
-        loginViewModel.getValidateLoginLiveData().observe(this, status -> {
+        SingleLiveEvent<Boolean> validateLoginLiveData = loginViewModel.getValidateLoginLiveData();
+        if(validateLoginLiveData.hasActiveObservers()){
+            validateLoginLiveData.removeObservers(this);
+        }
+        validateLoginLiveData.observe(this, status -> {
             if (status) {
                 movieActivityViewModel.setFragment(UsersListFragment.newInstance());
             } else {
@@ -82,9 +86,13 @@ public class MovieActivity extends AppCompatActivity implements HasSupportFragme
 
     private void observeRequestToken(){
         loginViewModel.getValidRequestToken();
-        loginViewModel.getValidateRequestTokenLiveData().observe(this, token -> {
-            loginViewModel.checkIfValidSessionExists();
-        });
+        MutableLiveData<String> tokenLiveData = loginViewModel.getValidateRequestTokenLiveData();
+        tokenLiveData.removeObservers(this::getLifecycle);
+        if(!tokenLiveData.hasActiveObservers()){
+            tokenLiveData.observe(this, token -> {
+                loginViewModel.checkIfValidSessionExists();
+            });
+        }
     }
 
     private void setupFragmentMangerWrapper(){
@@ -105,6 +113,5 @@ public class MovieActivity extends AppCompatActivity implements HasSupportFragme
     public AndroidInjector<Fragment> supportFragmentInjector() {
         return supportFragmentInjector;
     }
-
 
 }

@@ -52,5 +52,10 @@ public class LoginViewModel extends ViewModel {
         return loginRepository.getValidateRequestTokenLiveData();
     }
 
+    @Override
+    public void onCleared() {
+        loginRepository.dispose();
+    }
+
 }
 

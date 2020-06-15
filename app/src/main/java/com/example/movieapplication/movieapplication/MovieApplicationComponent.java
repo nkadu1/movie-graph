@@ -10,7 +10,7 @@ import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 
 /**
- * Performs dagger android field injection on PlanItApplication class.
+ * Performs dagger android field injection on MovieApplication class.
  * <p>
  * AndroidInjector reduces the boilder plate code needed to inject into Android Framework component
  * classes.
@@ -24,7 +24,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 })
 public interface MovieApplicationComponent extends AndroidInjector<MovieApplication> {
     /*
-       Builds the AndroidInjector that is used to perform field injection on PlanItApplication class.
+       Builds the AndroidInjector that is used to perform field injection on MovieApplication class.
      */
     @Component.Builder
     abstract class Builder extends AndroidInjector.Builder<MovieApplication> {

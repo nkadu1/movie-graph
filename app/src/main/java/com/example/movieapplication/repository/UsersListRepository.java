@@ -32,12 +32,16 @@ public class UsersListRepository {
         apolloClient = ApolloClientConnector.getApolloClient();
     }
 
+    ApolloCall<GetUsersCollectionQuery.Data> userListCall;
     public void fetchUsersCollection() {
         final GetUsersCollectionQuery usersCollectionQuery = GetUsersCollectionQuery.builder()
                 .accountId(Account.ACCOUNT_ID)
                 .build();
+        if(userListCall !=null){
+            userListCall.cancel();
+        }
 
-        ApolloCall<GetUsersCollectionQuery.Data> userListCall = apolloClient
+        userListCall = apolloClient
                 .query(usersCollectionQuery)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_FIRST);
 
